@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sample_chatgpt_app/constants/constants.dart';
 import 'package:sample_chatgpt_app/services/assets_manager.dart';
 import 'package:sample_chatgpt_app/widgets/chat_widget.dart';
+import 'package:sample_chatgpt_app/widgets/text_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -40,8 +41,30 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text("ChatGPT"),
         actions: [
           IconButton(
-            onPressed: () {
-              debugPrint("more verted rounded");
+            onPressed: () async {
+              await showModalBottomSheet(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  backgroundColor: scaffoldBackgroundColor,
+                  context: context,
+                  builder: (context) {
+                    return Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Row(
+                        children: const [
+                          Flexible(
+                            child: TextWidget(
+                              label: "Chosen Model",
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
             },
             icon: const Icon(
               Icons.more_vert_rounded,
