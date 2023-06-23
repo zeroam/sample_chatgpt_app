@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sample_chatgpt_app/constants/constants.dart';
 import 'package:sample_chatgpt_app/screens/services.dart';
+import 'package:sample_chatgpt_app/services/api_service.dart';
 import 'package:sample_chatgpt_app/services/assets_manager.dart';
 import 'package:sample_chatgpt_app/widgets/chat_widget.dart';
-import 'package:sample_chatgpt_app/widgets/text_widget.dart';
+
+import '../models/models_model.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -72,37 +74,43 @@ class _ChatScreenState extends State<ChatScreen> {
                 color: Colors.white,
                 size: 18,
               ),
-              Material(
-                color: cardColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          style: const TextStyle(color: Colors.white),
-                          controller: textEditingController,
-                          onSubmitted: (value) {
-                            debugPrint("send message");
-                          },
-                          decoration: const InputDecoration.collapsed(
-                            hintText: "How can I help you",
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+            ],
+            Material(
+              color: cardColor,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        style: const TextStyle(color: Colors.white),
+                        controller: textEditingController,
+                        onSubmitted: (value) {
+                          debugPrint("send message");
+                        },
+                        decoration: const InputDecoration.collapsed(
+                          hintText: "How can I help you",
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          print("send message");
-                        },
-                        icon: const Icon(Icons.send),
-                        color: Colors.white,
-                      )
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        try {
+                          List<ModelsModel> models =
+                              await ApiService.getModels();
+                          print(models);
+                        } catch (error) {
+                          print("error $error");
+                        }
+                      },
+                      icon: const Icon(Icons.send),
+                      color: Colors.white,
+                    )
+                  ],
                 ),
-              )
-            ]
+              ),
+            )
           ],
         ),
       ),
